@@ -1,50 +1,51 @@
 <template>
-  <div style="">
-    <blur :blur-amount=40 :url="url">
-      <p class="center"><img :src="url"></p>
-    </blur>
-    <flexbox :gutter="0">
-      <flexbox-item v-for="(img, index) in images" :key="index"><img :src="img" style="width:100%" @click="url = img" /></flexbox-item>
-    </flexbox>
+  <div>
+    <panel header="图文组合列表" :list="list" :type="type"></panel>
   </div>
 </template>
+
 <script>
-import {
-  Flexbox,
-  FlexboxItem,
-  Blur
-} from 'vux'
+import { Panel } from 'vux'
 
 export default {
   components: {
-    Blur,
-    Flexbox,
-    FlexboxItem
+    Panel
   },
-  data() {
+  data () {
     return {
-      images: [
-        'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
-        'https://o3e85j0cv.qnssl.com/waterway-107810__340.jpg',
-        'https://o3e85j0cv.qnssl.com/hot-chocolate-1068703__340.jpg'
-      ],
-      url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg'
+      type: '1',
+      list: []
+    }
+  },
+  created () {
+   this.getLatestNews() 
+  },
+  methods: {
+    getLatestNews() {
+      let self = this
+      this.$http.get('/api/4/news/latest')
+      .then(function(res){
+        let body = res.data
+        self.list = body.stories.map(function(item){
+          let _item = {}
+          _item['src'] = item.images[0]
+          _item['title'] = item.title
+          _item['desc'] = ''
+          _item['url'] = {
+            path:'/article/' + item.id,
+            replace:false
+          }
+          return _item
+        })
+      })
+      .catch(function(err){
+        console.log(err)
+      })
     }
   }
 }
 </script>
-<style scoped>
-.center {
-  text-align: center;
-  padding-top: 20px;
-  color: #fff;
-  font-size: 18px;
-}
 
-.center img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 4px solid #ececec;
-}
+<style lang="stylus">
+@import'./main.styl'
 </style>

@@ -9,7 +9,8 @@ Vue.use(VueRouter)
 import './util/flexible.debug'
 import './util/flexible_css.debug'
 import './style/common.styl'
-
+import { AjaxPlugin } from 'vux'
+Vue.use(AjaxPlugin)
 
 if('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function() {
