@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 import routes from './router'
 import FastClick from 'fastclick'
 import App from './App.vue'
-Vue.use(VueRouter)
+
 import './util/flexible.debug'
 import './util/flexible_css.debug'
 import './style/common.styl'
